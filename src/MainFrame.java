@@ -4,44 +4,76 @@ import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
+import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ListDataListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 
 import com.sun.media.sound.ModelAbstractChannelMixer;
 
+import javafx.scene.control.ComboBox;
 import model.Client;
+import model.Operation;
 
 public class MainFrame extends JFrame {
-	private class ClientTableModel extends AbstractTableModel {
+	private class ClientOperationTableModel extends AbstractTableModel {
+		
+		private ArrayList<Operation> operations = null;
+
+		private final String[] headers = {"ID","N° Carte","N°Compte", "Montant","Date"};
+		
+		public ClientOperationTableModel(ArrayList<Operation> operations) {
+			super();
+			this.operations = operations;
+		}
+		
+
+
+		@Override
+		public String getColumnName(int column) {
+			return headers[column];
+		}
 
 		@Override
 		public int getRowCount() {
-			// TODO Auto-generated method stub
-			return 0;
+			return operations.size();
 		}
 
 		@Override
 		public int getColumnCount() {
-			// TODO Auto-generated method stub
-			return 0;
+			return headers.length;
 		}
 
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			// TODO Auto-generated method stub
-			return null;
+			if(columnIndex >= headers.length)
+				return null;
+			if(columnIndex == 0)
+				return operations.get(rowIndex).getIdOperation();
+			else if(columnIndex == 1)
+				return operations.get(rowIndex).getIdCard();
+			else if(columnIndex == 2)
+				return operations.get(rowIndex).getIdAccount();
+			else if(columnIndex == 3)
+				return operations.get(rowIndex).getOperationAmount();
+			else 
+				return operations.get(rowIndex).getOperationDate();
 		}
 		
 	}
+	
 	
 	
 	/**
@@ -53,7 +85,7 @@ public class MainFrame extends JFrame {
 	protected MainFrame()
 	{
 		setTitle("GUI");
-		setSize(300, 400);
+		setSize(600, 400);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null); // Middle of the screen
 		 
@@ -78,19 +110,30 @@ public class MainFrame extends JFrame {
 		JTextField surnameField = new JTextField("Prénom");
 		panel.add(surnameField);
 		
+		JPanel H_panel = new JPanel();
+		BoxLayout H_layout = new BoxLayout(H_panel, BoxLayout.X_AXIS);
+		H_panel.setLayout(H_layout);
+		
 		JButton buttonSearch = new JButton("Recherche");
-		panel.add(buttonSearch);
+		H_panel.add(buttonSearch);
 		
 		JButton buttonReset = new JButton("Réinitialiser");
-		panel.add(buttonReset);	
+		H_panel.add(buttonReset);	
 		
 		JButton buttonQuit = new JButton("Quitter");
-		panel.add(buttonQuit);
+		H_panel.add(buttonQuit);
 		
-		JComboBox<Client> cbClients = new JComboBox<>();
+		panel.add(H_panel);
+		
+		
+		JComboBox<String> cbClients = new JComboBox<>();
 		panel.add(cbClients);
 		
-		JTable tableOpe = new JTable(new ClientTableModel());
+		
+		JTable tableOpe = new JTable(new ClientOperationTableModel(new ArrayList<Operation>()));
+		tableOpe.createDefaultColumnsFromModel();
+		tableOpe.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		panel.add(tableOpe.getTableHeader());
 		panel.add(tableOpe);
 		
 		this.add(panel);
