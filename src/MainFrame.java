@@ -4,6 +4,8 @@ import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -95,6 +97,10 @@ public class MainFrame extends JFrame {
 	}
 	
 	
+	private void search(String nom, String prenom) {
+		
+	}
+	
 	
 	
 	private void prepareComponents()
@@ -115,12 +121,36 @@ public class MainFrame extends JFrame {
 		H_panel.setLayout(H_layout);
 		
 		JButton buttonSearch = new JButton("Recherche");
+		buttonSearch.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				search(nameField.getText(),surnameField.getText());
+			}
+		});
 		H_panel.add(buttonSearch);
 		
 		JButton buttonReset = new JButton("Réinitialiser");
+		buttonReset.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				nameField.setText("");
+				surnameField.setText("");
+			}
+		});
+		
 		H_panel.add(buttonReset);	
 		
 		JButton buttonQuit = new JButton("Quitter");
+		buttonQuit.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		
 		H_panel.add(buttonQuit);
 		
 		panel.add(H_panel);
