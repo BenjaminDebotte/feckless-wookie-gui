@@ -19,4 +19,5 @@ hs_err_pid*
 .settings/org.eclipse.wst.common.project.facet.core.xml
 .settings/org.eclipse.wst.jsdt.ui.superType.container
 .settings/org.eclipse.wst.jsdt.ui.superType.name
+si-lib.jardesc
 /bin/
