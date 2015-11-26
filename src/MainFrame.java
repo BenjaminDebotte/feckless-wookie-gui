@@ -1,80 +1,28 @@
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
-import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ListDataListener;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 
-import com.sun.media.sound.ModelAbstractChannelMixer;
-
-import javafx.scene.control.ComboBox;
-import model.Client;
+import dao.ClientDao;
+import dao.DbClientDao;
+import db.DbManagement;
+import db.IDbManagement;
 import model.Operation;
 
 public class MainFrame extends JFrame {
-	private class ClientOperationTableModel extends AbstractTableModel {
-		
-		private ArrayList<Operation> operations = null;
-
-		private final String[] headers = {"ID","N° Carte","N°Compte", "Montant","Date"};
-		
-		public ClientOperationTableModel(ArrayList<Operation> operations) {
-			super();
-			this.operations = operations;
-		}
-		
-
-
-		@Override
-		public String getColumnName(int column) {
-			return headers[column];
-		}
-
-		@Override
-		public int getRowCount() {
-			return operations.size();
-		}
-
-		@Override
-		public int getColumnCount() {
-			return headers.length;
-		}
-
-		@Override
-		public Object getValueAt(int rowIndex, int columnIndex) {
-			if(columnIndex >= headers.length)
-				return null;
-			if(columnIndex == 0)
-				return operations.get(rowIndex).getIdOperation();
-			else if(columnIndex == 1)
-				return operations.get(rowIndex).getIdCard();
-			else if(columnIndex == 2)
-				return operations.get(rowIndex).getIdAccount();
-			else if(columnIndex == 3)
-				return operations.get(rowIndex).getOperationAmount();
-			else 
-				return operations.get(rowIndex).getOperationDate();
-		}
-		
-	}
+	
+	
 	
 	
 	
@@ -84,8 +32,8 @@ public class MainFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 
-	protected MainFrame()
-	{
+	protected MainFrame() {
+		
 		setTitle("GUI");
 		setSize(600, 400);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -98,13 +46,14 @@ public class MainFrame extends JFrame {
 	
 	
 	private void search(String nom, String prenom) {
-		
+		//DbManagement.getInstance().setDelegate();
+		//ClientDao.getInstance().setDelegate(new DbClientDao());
 	}
 	
 	
 	
-	private void prepareComponents()
-	{	 
+	private void prepareComponents() {
+		
 		JPanel panel = new JPanel();
 		
 		BoxLayout layout = new BoxLayout(panel,BoxLayout.Y_AXIS);
@@ -183,7 +132,48 @@ public static void main(String[] args)
 	);
 
 }
-	 
+	private class ClientOperationTableModel extends AbstractTableModel {
+		
+		private ArrayList<Operation> operations = null;
 	
+		private final String[] headers = {"ID","N° Carte","N°Compte", "Montant","Date"};
+		
+		public ClientOperationTableModel(ArrayList<Operation> operations) {
+			super();
+			this.operations = operations;
+		}
+		
 	
+		@Override
+		public String getColumnName(int column) {
+			return headers[column];
+		}
+	
+		@Override
+		public int getRowCount() {
+			return operations.size();
+		}
+	
+		@Override
+		public int getColumnCount() {
+			return headers.length;
+		}
+	
+		@Override
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			if(columnIndex >= headers.length)
+				return null;
+			if(columnIndex == 0)
+				return operations.get(rowIndex).getIdOperation();
+			else if(columnIndex == 1)
+				return operations.get(rowIndex).getIdCard();
+			else if(columnIndex == 2)
+				return operations.get(rowIndex).getIdAccount();
+			else if(columnIndex == 3)
+				return operations.get(rowIndex).getOperationAmount();
+			else 
+				return operations.get(rowIndex).getOperationDate();
+		}
+		
+	}	
 }
